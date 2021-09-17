@@ -18,6 +18,6 @@ int * GetMazeTile(Maze * maze, int x, int y);
 void ResetMaze(Maze * maze);
 void FreeMaze(Maze * maze);
 void GenerateMaze(Maze * maze, unsigned seed);
-void SaveMaze(Maze * maze, char * filename);
+void SaveMaze(Maze * maze, const char * filename);
 
 #endif//MAZE_H

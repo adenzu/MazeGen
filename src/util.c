@@ -4,37 +4,34 @@
 #include <stdio.h>
 #include <math.h>
 
-int Sum(int * arr, int size){
-    int sum = 0;
-    
-    while(size--){
-        sum += arr[size];
-    }
-
-    return sum;
-}
-
+/**
+ * @brief       Returns a random integer in range [min, max)
+ * @param   min Lower limit, inclusive
+ * @param   max Upper limit, exclusive
+ * @return      Random integer in range [min, max)
+ */
 int RandomRange(int min, int max){
     return rand() % (max - min) + min;
 }
 
-int RandomIndex(int * odds, int size){
-    int oddSum = Sum(odds, size);
-    int random = RandomRange(0, oddSum);
 
-    while(size--){
-        if(random < odds[size]){
-            return size;
-        }
-        random -= odds[size];
-    }
-}
-
+/**
+ * @brief           Creates an array of integers
+ * @param   size    Size of the array
+ * @return          Pointer to the created array
+ */
 int * CreateIntArray(int size){
     int * array = (int *) calloc(size, sizeof(int));
     return array;
 }
 
+
+/**
+ * @brief           Creates a matrix of integers
+ * @param   width   Width of the matrix
+ * @param   height  Height of the matrix
+ * @return          Pointer to the created matrix
+ */
 int ** CreateIntMatrix(int width, int height){
     int ** matrix = (int **) calloc(height, sizeof(int *));
 
@@ -45,43 +42,57 @@ int ** CreateIntMatrix(int width, int height){
     return matrix;
 }
 
+
+/**
+ * @brief           Fills given integer array with given value
+ * @param   arr     Pointer to the array to fill
+ * @param   size    Size of the array
+ * @param   value   Value to fill with
+ */
 void FillIntArray(int * arr, int size, int value){
     while(size--){
         arr[size] = value;
     }
 }
 
+
+/**
+ * @brief           Fills given integer matrix with given value
+ * @param   matrix  Pointer to the matrix to fill
+ * @param   width   Width of the matrix
+ * @param   height  Height of the matrix
+ * @param   value   Value to fill with
+ */
 void FillIntMatrix(int ** matrix, int width, int height, int value){
     while(height--){
         FillIntArray(matrix[height], width, value);
     }
 }
 
-void PrintIntArray(int * arr, int size){
-    for(int i = 0; i < size; ++i){
-        printf("%*c", 5 - printf("%d", arr[i]), ' ');
-    }
-}
 
-void PrintIntMatrix(int ** matrix, int width, int height){
-    for(int i = 0; i < height; ++i){
-        PrintIntArray(matrix[i], width);
-        printf("\n");
-    }
-}
-
+/**
+ * @brief           Fills given uint8_t array with given value
+ * @param   arr     Pointer to the array to fill
+ * @param   size    Size of the array
+ * @param   value   Value to fill with
+ */
 void FillU8Array(uint8_t * arr, int size, uint8_t value){
     while(size--){
         arr[size] = value;
     }
 }
 
+
+/**
+ * @brief               Returns the differential ceiling of the given value by the given difference
+ * @param   difference  Common difference
+ * @param   value       Value to get the ceiling of
+ * @return              Differential ceiling of the given value
+ * 
+ * @example
+ * DifferentialCeil(6, 9) = 12
+ * DifferentialCeil(64, 81) = 128
+ */
 int DifferentialCeil(int difference, int value){
     return (int) ceilf((float) value / difference) * difference;
 }
-
-
-
-
-
-

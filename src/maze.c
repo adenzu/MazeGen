@@ -5,6 +5,12 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+/** 
+ * @brief           Creates a blank Maze object
+ * @param   width   Width of the maze
+ * @param   height  Height of the maze
+ * @return          Pointer to the created maze
+ */
 Maze * CreateMaze(int width, int height){
     Maze * maze = (Maze *) malloc(sizeof(Maze));
 
@@ -17,14 +23,31 @@ Maze * CreateMaze(int width, int height){
     return maze;
 }
 
+
+/**
+ * @brief       Returns pointer to the tile at given coordinates
+ * @param   x   X coordinate of the tile
+ * @param   y   Y coordinate of the tile
+ * @return      Pointer to the tile at given coordinates
+ */
 int * GetMazeTile(Maze * maze, int x, int y){
     return &(maze->matrix[y][x]);
 }
 
+
+/**
+ * @brief           Resets given maze
+ * @param   maze    Maze to reset
+ */
 void ResetMaze(Maze * maze){
     FillIntMatrix(maze->matrix, maze->width, maze->height, 0);
 }
 
+
+/**
+ * @brief           Frees given maze
+ * @param   maze    Maze to free
+ */
 void FreeMaze(Maze * maze){
     while(maze->height--){
         free(maze->matrix[maze->height]);
@@ -33,14 +56,21 @@ void FreeMaze(Maze * maze){
     free(maze);
 }
 
+
+/**
+ * @brief           Recursively genereates tiles of the given maze
+ * @param   maze    Maze whose tiles are to be generated
+ * @param   x       X coordinate of the current tile
+ * @param   y       Y coordinate of the current tile
+ */
 void RecursiveMazeGeneration(Maze * maze, int x, int y){
     int * tile = GetMazeTile(maze, x, y);
     int baseMask = 0b10001000 >> RandomRange(0, 4);
 
     for(int bitIndex = 0; bitIndex < 4; ++bitIndex){
         int mask = baseMask >> bitIndex;
-        int nextX = x, nextY = y;
         int direction = (~*tile & 0b1111) & mask;
+        int nextX = x, nextY = y;
 
         switch(direction){
             case RIGHT:
@@ -67,14 +97,28 @@ void RecursiveMazeGeneration(Maze * maze, int x, int y){
     }
 }
 
+
+/**
+ * @brief           Generates given maze with given seed
+ * @param   maze    Maze to be generated
+ * @param   seed    Seed of the generation
+ */
 void GenerateMaze(Maze * maze, unsigned seed){
     srand(seed);
     RecursiveMazeGeneration(maze, 0, 0);
+
+    // ends of the maze
     *GetMazeTile(maze, 0, 0) |= LEFT;
     *GetMazeTile(maze, maze->width - 1, maze->height - 1) |= RIGHT;
 }
 
-void SaveMaze(Maze * maze, char * filename){
+
+/**
+ * @brief               Save given maze to given file name as BMP image
+ * @param   maze        Maze to be saved
+ * @param   filename    Name of the file for maze to be saved
+ */
+void SaveMaze(Maze * maze, const char * filename){
     BMP * bmp = CreateBMP(4 * maze->width, 4 * maze->height);
     int * pixels = (int *) calloc(bmp->width * bmp->height, sizeof(int));
 
